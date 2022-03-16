@@ -1,0 +1,18 @@
+version: "3.8"
+services:
+
+#  ----------- App Container -------------------
+    apache:
+        build: 
+            context: ./apache
+        container_name: apache_container
+        restart: always
+        ports:
+            - 8000:80
+        volumes:
+          - ./apache/app:/var/www/html
+        environment:
+          MYSQL_HOST: mysql
+          MYSQL_USER: root
+          MYSQL_PASSWORD: secret
+          MYSQL_DB: todos
