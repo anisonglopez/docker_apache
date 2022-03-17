@@ -1,7 +1,7 @@
 FROM php:7.4.28-apache
 
 RUN apt-get update -y && apt-get install -y libmcrypt-dev openssl
-RUN docker-php-ext-install -j$(nproc) pdo pdo_mysql mysqli
+RUN docker-php-ext-install -j$(nproc) pdo_mysql
 
 RUN apt-get update && apt-get install -y libmcrypt-dev openssl \
     git \
@@ -37,6 +37,8 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 
 # 3. mod_rewrite for URL rewrite and mod_headers for .htaccess extra headers like Access-Control-Allow-Origin-
 RUN a2enmod rewrite headers
+
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 # 4. start with base php config, then add extensions
 # RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
